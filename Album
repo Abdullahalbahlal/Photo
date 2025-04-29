@@ -15,7 +15,7 @@ public class Album {
         return name;
     }
 
-    public String getCondition() {
+    public String getCondition()  {
         return condition;
     }
 

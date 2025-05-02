@@ -177,21 +177,25 @@ public class BST<T> {
         return false;
     }
 
-    public String inOrder() {
-        AllKeys = "";
-        if (root != null)
-            inorder(root);
-        return AllKeys;
-    }
+   public String preOrder() {
+    AllKeys = "";
+    if (root != null)
+        preorder(root);
+    return AllKeys;
+}
 
-    private void inorder(BSTNode<T> p) {
-        if (p.left != null)
-            inorder(p.left);
+private void preorder(BSTNode<T> p) {
+    if (p != null) {
         if (AllKeys.equals(""))
             AllKeys = p.key;
         else
             AllKeys += " AND " + p.key;
+
+        if (p.left != null)
+            preorder(p.left);
         if (p.right != null)
-            inorder(p.right);
+            preorder(p.right);
     }
+}
+
 }

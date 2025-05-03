@@ -1,8 +1,9 @@
+
 public class InvIndexPhotoManager {
-    BST<LinkedList<Photo>> Inverted_Index;
+    BST<LinkedList<Photo>> indexedPhotos;
 
     public InvIndexPhotoManager() {
-        Inverted_Index = new BST<LinkedList<Photo>>();
+    	indexedPhotos = new BST<LinkedList<Photo>>();
     }
 
     public void addPhoto(Photo p) {
@@ -10,36 +11,36 @@ public class InvIndexPhotoManager {
         if (!tags.empty()) {
             tags.findFirst();
             while (!tags.last()) {
-                if (Inverted_Index.findkey(tags.retrieve())) {
-                    LinkedList<Photo> photos_inverted = Inverted_Index.retrieve();
+                if (indexedPhotos.findkey(tags.retrieve())) {
+                    LinkedList<Photo> photos_inverted = indexedPhotos.retrieve();
                     photos_inverted.insert(p);
-                    Inverted_Index.update(tags.retrieve(), photos_inverted);
+                    indexedPhotos.update(tags.retrieve(), photos_inverted);
                 } else {
                     LinkedList<Photo> photos_inverted = new LinkedList<Photo>();
                     photos_inverted.insert(p);
-                    Inverted_Index.insert(tags.retrieve(), photos_inverted);
+                    indexedPhotos.insert(tags.retrieve(), photos_inverted);
                 }
                 tags.findNext();
             }
-            if (Inverted_Index.findkey(tags.retrieve())) {
-                LinkedList<Photo> photos_inverted = Inverted_Index.retrieve();
+            if (indexedPhotos.findkey(tags.retrieve())) {
+                LinkedList<Photo> photos_inverted = indexedPhotos.retrieve();
                 photos_inverted.insert(p);
-                Inverted_Index.update(tags.retrieve(), photos_inverted);
+                indexedPhotos.update(tags.retrieve(), photos_inverted);
             } else {
                 LinkedList<Photo> photos_inverted = new LinkedList<Photo>();
                 photos_inverted.insert(p);
-                Inverted_Index.insert(tags.retrieve(), photos_inverted);
+                indexedPhotos.insert(tags.retrieve(), photos_inverted);
             }
         }
     }
 
     public void deletePhoto(String path) {
-        String AllTags = Inverted_Index.inOrder();
+        String AllTags = indexedPhotos.preOrder();
         String[] tags = AllTags.split(" AND ");
 
         for (int i = 0; i < tags.length; i++) {
-            Inverted_Index.findkey(tags[i]);
-            LinkedList<Photo> photos_inverted = Inverted_Index.retrieve();
+        	indexedPhotos.findkey(tags[i]);
+            LinkedList<Photo> photos_inverted = indexedPhotos.retrieve();
             photos_inverted.findFirst();
             while (!photos_inverted.last()) {
                 if (photos_inverted.retrieve().getPath().compareToIgnoreCase(path) == 0) {
@@ -54,14 +55,14 @@ public class InvIndexPhotoManager {
             }
 
             if (photos_inverted.getSize() == 0) {
-                Inverted_Index.removeKey(tags[i]);
+            	indexedPhotos.removeKey(tags[i]);
             } else {
-                Inverted_Index.update(tags[i], photos_inverted);
+            	indexedPhotos.update(tags[i], photos_inverted);
             }
         }
     }
 
     public BST<LinkedList<Photo>> getPhotos() {
-        return Inverted_Index;
+        return indexedPhotos;
     }
 }

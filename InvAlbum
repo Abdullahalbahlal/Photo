@@ -1,3 +1,4 @@
+
 public class InvAlbum {
     private String name;
     private String condition;
@@ -24,36 +25,36 @@ public class InvAlbum {
     }
 
     public LinkedList<Photo> getPhotos() {
-        BST<LinkedList<Photo>> photosBST = invmanager.getPhotos();
-        LinkedList<Photo> Rphotos = new LinkedList<Photo>();
+        BST<LinkedList<Photo>> organizedPhotos = invmanager.getPhotos();
+        LinkedList<Photo> resultPhotos = new LinkedList<Photo>();
         NbComps = 0;
         String[] tags;
 
         if (this.condition.compareTo("") != 0)
             tags = condition.split(" AND ");
         else
-            tags = photosBST.inOrder().split(" AND ");
+            tags = organizedPhotos.preOrder().split(" AND ");
 
         for (int i = 0; i < tags.length; i++) {
-            if (photosBST.findkey(tags[i])) {
+            if (organizedPhotos.findkey(tags[i])) {
                 if (i == 0) {
-                    LinkedList<Photo> miniTag = photosBST.retrieve();
+                    LinkedList<Photo> miniTag = organizedPhotos.retrieve();
                     miniTag.findFirst();
                     while (!miniTag.last()) {
-                        Rphotos.insert(miniTag.retrieve());
+                    	resultPhotos.insert(miniTag.retrieve());
                         miniTag.findNext();
                     }
-                    Rphotos.insert(miniTag.retrieve());
+                    resultPhotos.insert(miniTag.retrieve());
                 } else {
-                    Rphotos = Function1(Rphotos, photosBST.retrieve());
+                	resultPhotos = Function1(resultPhotos, organizedPhotos.retrieve());
                 }
             } else {
-                Rphotos = new LinkedList<Photo>();
+            	resultPhotos = new LinkedList<Photo>();
                 break;
             }
         }
 
-        return Rphotos;
+        return resultPhotos;
     }
 
     public int getNbComps() {
